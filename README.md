@@ -12,6 +12,7 @@
 - автопроверка в каждом pull request (см. ниже) и чек-лист признаков «сайта от нейросети» в `.github/CHECKLIST.md`;
 - публикация превью на GitHub Pages через GitHub Actions;
 - шаблон pull request со скриншотами 375 / 768 / 1280.
+- скилл Claude `web-design-guidelines` в `.claude/skills/`: проверка вёрстки по правилам Vercel Web Interface Guidelines (доступность, фокус, формы, анимации, типографика). Claude подхватывает его сам, когда просят проверить интерфейс или дизайн.
 
 ## Новый сайт из шаблона
 
@@ -55,7 +56,7 @@ npx serve .
 ## Публикация
 
 - **Превью**: автоматически на GitHub Pages после пуша в `main` (`https://<логин>.github.io/<репозиторий>/`).
-- **Боевой сайт**: загрузить файлы на российский хостинг (Timeweb, Beget, Reg.ru) по FTP/SFTP или в Yandex Object Storage, без папок `.github`, `.check` и `node_modules`. Настроить на хостинге `404.html` как страницу ошибки 404. Перед этим пройти `npm run check:release`. Только после явного согласия владельца.
+- **Боевой сайт**: загрузить файлы на российский хостинг (Timeweb, Beget, Reg.ru) по FTP/SFTP или в Yandex Object Storage, без папок `.github`, `.claude`, `.check` и `node_modules`. Настроить на хостинге `404.html` как страницу ошибки 404. Перед этим пройти `npm run check:release`. Только после явного согласия владельца.
 
 ## Изображения
 

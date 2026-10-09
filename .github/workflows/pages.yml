@@ -30,6 +30,9 @@ jobs:
       # подставляем ей правильный корень, иначе она без стилей и с битой ссылкой на главную.
       - name: Корень сайта для страницы 404
         run: sed -i 's|<base href="/">|<base href="${{ steps.pages.outputs.base_path }}/">|' 404.html
+      # Служебные файлы Claude на сайт не нужны.
+      - name: Убрать служебные папки
+        run: rm -rf .claude
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
