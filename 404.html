@@ -3,16 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Страница открывается по любому несуществующему адресу, поэтому пути считаются от корня сайта.
+       На превью GitHub Pages сайт живёт в /<репозиторий>/: workflow pages.yml подставляет этот путь сюда. -->
+  <base href="/">
   <title>Страница не найдена</title>
   <meta name="robots" content="noindex">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
   <main id="main" class="section">
     <div class="container">
       <h1>Страница не найдена</h1>
-      <p><a href="/">Вернуться на главную</a></p>
+      <p class="lead">Возможно, адрес набран с ошибкой или страницу перенесли.</p>
+      <a class="button" href="./">На главную</a>
     </div>
   </main>
 </body>
