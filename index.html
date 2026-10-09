@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Название сайта — короткое описание</title>
+  <meta name="description" content="Описание сайта для поисковиков, 140–160 символов.">
+  <link rel="canonical" href="https://example.ru/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="Название сайта">
+  <meta property="og:description" content="Описание сайта для соцсетей и мессенджеров.">
+  <meta property="og:url" content="https://example.ru/">
+  <meta property="og:image" content="https://example.ru/assets/img/og.jpg">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="logo" href="./">Логотип</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Меню</button>
+      <nav id="site-nav" class="site-nav" aria-label="Основное меню">
+        <ul>
+          <li><a href="#about">О нас</a></li>
+          <li><a href="#services">Услуги</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <h1>Главный заголовок</h1>
+        <p class="lead">Одно-два предложения о том, что здесь предлагают и кому.</p>
+        <a class="button" href="#contacts">Связаться</a>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <h2>О нас</h2>
+        <p>Текст-заглушка.</p>
+      </div>
+    </section>
+
+    <section id="services" class="section">
+      <div class="container">
+        <h2>Услуги</h2>
+        <ul class="cards">
+          <li class="card"><h3>Услуга 1</h3><p>Описание.</p></li>
+          <li class="card"><h3>Услуга 2</h3><p>Описание.</p></li>
+          <li class="card"><h3>Услуга 3</h3><p>Описание.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contacts" class="section">
+      <div class="container">
+        <h2>Контакты</h2>
+        <p>Телефон, почта, адрес или форма обратной связи.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span data-year></span> Название</p>
+    </div>
+  </footer>
+</body>
+</html>
