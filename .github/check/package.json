@@ -1,0 +1,13 @@
+{
+  "name": "site-check",
+  "private": true,
+  "type": "module",
+  "description": "Автопроверка сайта на типичные ошибки: см. check.mjs и ../CHECKLIST.md",
+  "scripts": {
+    "check": "node check.mjs",
+    "check:release": "node check.mjs --release"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}

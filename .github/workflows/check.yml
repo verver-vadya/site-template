@@ -1,0 +1,42 @@
+# Автопроверка сайта в каждом pull request: битые ссылки, кнопки без состояний,
+# формы без реакции на ошибки, ошибки в консоли, вёрстка на 375 / 768 / 1280, заглушки.
+# Подробности: .github/check/check.mjs и .github/CHECKLIST.md
+name: Проверка сайта
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Перед публикацией: заглушки тоже считаются ошибками"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .github/check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: .github/check/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps --only-shell chromium
+      - name: Проверка
+        run: npm run ${{ inputs.release && 'check:release' || 'check' }}
+      - name: Скриншоты и отчёт
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: .check/

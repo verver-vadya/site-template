@@ -24,7 +24,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
+      - id: pages
+        uses: actions/configure-pages@v5
+      # Превью живёт по адресу /<репозиторий>/, а страница 404 открывается на любом адресе:
+      # подставляем ей правильный корень, иначе она без стилей и с битой ссылкой на главную.
+      - name: Корень сайта для страницы 404
+        run: sed -i 's|<base href="/">|<base href="${{ steps.pages.outputs.base_path }}/">|' 404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .

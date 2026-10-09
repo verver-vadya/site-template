@@ -18,6 +18,7 @@
   <link rel="preload" href="assets/fonts/manrope-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/form.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -66,14 +67,41 @@
     <section id="contacts" class="section">
       <div class="container">
         <h2>Контакты</h2>
-        <p>Телефон, почта, адрес или форма обратной связи.</p>
+        <p>Телефон, почта, адрес. Или оставьте заявку, и мы перезвоним.</p>
+
+        <form class="form" action="https://formspree.io/f/YOUR_FORM_ID" method="post" data-form>
+          <div class="field">
+            <label for="f-name">Имя</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required minlength="2"
+              data-error-required="Напишите, как к вам обращаться">
+          </div>
+          <div class="field">
+            <label for="f-phone">Телефон</label>
+            <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required data-validate="phone"
+              aria-describedby="f-phone-hint" data-error-required="Укажите телефон, чтобы мы могли перезвонить">
+            <p class="field__hint" id="f-phone-hint">В любом формате, с +7 или 8</p>
+          </div>
+          <div class="field">
+            <label for="f-message">Комментарий <span class="field__optional">(необязательно)</span></label>
+            <textarea id="f-message" name="message" rows="4" maxlength="2000"></textarea>
+          </div>
+          <div class="field field--check">
+            <input id="f-consent" name="consent" type="checkbox" value="да" required
+              data-error-required="Без согласия на обработку данных мы не можем принять заявку">
+            <label for="f-consent">Даю согласие на обработку персональных данных в соответствии с <a href="privacy.html">политикой конфиденциальности</a></label>
+          </div>
+          <!-- Ловушка для спам-ботов: человек это поле не видит -->
+          <input class="form__trap" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="button" type="submit">Отправить заявку</button>
+          <p class="form__status" role="status" aria-live="polite" hidden></p>
+        </form>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>&copy; <span data-year></span> Название</p>
+      <p>&copy; <span data-year>2026</span> Название · <a href="privacy.html">Политика конфиденциальности</a></p>
     </div>
   </footer>
 </body>
