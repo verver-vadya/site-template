@@ -40,3 +40,4 @@ jobs:
         with:
           name: screenshots
           path: .check/
+          include-hidden-files: true # папка .check начинается с точки
