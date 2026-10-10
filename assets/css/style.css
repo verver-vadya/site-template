@@ -47,13 +47,22 @@
   --radius: 12px;
   --container: 72rem;
   --tap: 2.75rem; /* минимальная зона нажатия, 44 px */
-  --duration: 160ms;
+
+  /* Движение (подробно: «Движение» в инструкциях проекта). Мелочи быстро, окна и крупное плавно */
+  --duration: 160ms;               /* наведение и нажатие на кнопки */
+  --duration-sheet-in: 520ms;      /* окно выезжает */
+  --duration-sheet-out: 320ms;     /* окно уезжает: быстрее, но без рывка в конце */
+  --duration-soft: 700ms;          /* наведение на крупный текст и картинки */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);   /* резкий старт: только для мелочей до 200 мс */
+  --ease-sheet: cubic-bezier(0.35, 0, 0.15, 1); /* окна и панели: трогаются мягко, долго тормозят */
+  --ease-soft: cubic-bezier(0.45, 0, 0.2, 1);   /* крупный текст и картинки: плавное начало и конец */
 }
 
 /* Сброс */
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* scrollbar-gutter: место под полосу прокрутки остаётся, когда окно блокирует прокрутку страницы, и она не прыгает вбок */
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scrollbar-gutter: stable; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   font-family: var(--font-body);
@@ -145,6 +154,65 @@ a { color: var(--color-accent); text-underline-offset: 0.15em; }
 .form__status { padding: var(--space-s); border-radius: calc(var(--radius) / 2); border-left: 4px solid; }
 .form__status[data-state="success"] { color: var(--color-success); background: var(--color-success-bg); }
 .form__status[data-state="error"] { color: var(--color-danger); background: var(--color-danger-bg); }
+
+/* Окно-шторка (<dialog class="sheet">): на телефоне поднимается снизу, на компьютере выезжает справа.
+   Сначала лист, потом содержимое проявляется вслед за ним. Открытие и закрытие в assets/js/main.js */
+.sheet {
+  position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; background: transparent; color: var(--color-text);
+  /* clip, а не hidden: hidden всё равно прокручивается, и фокус на кнопке внутри подбрасывает окно в конце выезда */
+  overflow: hidden; overflow: clip;
+}
+.sheet::backdrop { background: rgb(0 0 0 / 0.4); opacity: 0; transition: opacity var(--duration-sheet-out) ease; }
+.sheet.is-open::backdrop { opacity: 1; transition-duration: var(--duration-sheet-in); }
+html.has-sheet { overflow: hidden; }
+.sheet__panel {
+  position: absolute; left: 0; right: 0; bottom: 0; max-height: 92svh;
+  display: flex; flex-direction: column;
+  background: var(--color-bg); border-radius: var(--radius) var(--radius) 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  transform: translateY(100%); transition: transform var(--duration-sheet-in) var(--ease-sheet);
+  will-change: transform; contain: layout paint;
+}
+.sheet.is-open .sheet__panel { transform: none; }
+.sheet.is-closing .sheet__panel { transform: translateY(100%); transition-duration: var(--duration-sheet-out); }
+.sheet__bar, .sheet__body { opacity: 0; transition: opacity 260ms ease; }
+.sheet.is-open .sheet__bar, .sheet.is-open .sheet__body { opacity: 1; transition: opacity 420ms ease 140ms; }
+.sheet__bar { display: flex; justify-content: flex-end; padding: var(--space-xs) var(--space-s) 0; flex: none; }
+.sheet__close {
+  display: inline-flex; align-items: center; gap: 0.4rem; min-height: var(--tap); padding: 0.4rem 0.75rem;
+  font: inherit; color: inherit; background: none; border: 0; border-radius: var(--radius); cursor: pointer;
+  transition: background-color var(--duration), transform var(--duration) var(--ease-out);
+}
+@media (hover: hover) { .sheet__close:hover { background: var(--color-surface); } }
+.sheet__close:active { transform: scale(0.97); }
+.sheet__body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 var(--space-m) var(--space-l); }
+.sheet__body > * + * { margin-top: var(--space-s); }
+.sheet__title:focus { outline: none; } /* фокус встаёт на заголовок только чтобы не рисовать рамку у «Закрыть» */
+@media (min-width: 768px) {
+  .sheet__panel {
+    top: 0; left: auto; width: min(32rem, 90vw); max-height: none; border-radius: 0;
+    transform: translateX(100%);
+  }
+  .sheet.is-closing .sheet__panel { transform: translateX(100%); }
+  .sheet__body { padding-inline: var(--space-l); }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Без анимаций в системе лист не выезжает, а мягко проявляется на месте */
+  .sheet { --duration-sheet-out: 220ms; }
+  .sheet__panel, .sheet.is-closing .sheet__panel { transform: none; opacity: 0; transition: opacity 360ms ease; }
+  .sheet.is-open .sheet__panel { opacity: 1; }
+  .sheet.is-closing .sheet__panel { opacity: 0; transition-duration: var(--duration-sheet-out); }
+}
+
+.card__more {
+  display: inline-flex; align-items: center; min-height: var(--tap); margin-top: var(--space-xs); padding: 0;
+  font: inherit; font-weight: 600; color: var(--color-accent); background: none; border: 0; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 1px;
+  transition: color var(--duration), text-decoration-thickness var(--duration);
+}
+@media (hover: hover) { .card__more:hover { text-decoration-thickness: 2px; } }
+.card__more:active { color: var(--color-text); }
 
 .prose { max-width: 70ch; }
 .prose h2 { margin-top: var(--space-l); margin-bottom: var(--space-s); }

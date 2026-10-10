@@ -1,5 +1,6 @@
 # Автопроверка сайта в каждом pull request: битые ссылки, кнопки без состояний,
-# формы без реакции на ошибки, ошибки в консоли, вёрстка на 375 / 768 / 1280, заглушки.
+# формы без реакции на ошибки, ошибки в консоли, вёрстка от 320 до 2560 px и при масштабе Windows,
+# наложения, окна, движение, заглушки; в pull request ещё сравнение размеров блоков с main.
 # Подробности: .github/check/check.mjs и .github/CHECKLIST.md
 name: Проверка сайта
 
@@ -25,6 +26,12 @@ jobs:
         working-directory: .github/check
     steps:
       - uses: actions/checkout@v4
+      # Версия до правки: с ней сравниваются размеры блоков (папка с точкой, проверка её не обходит)
+      - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.base_ref }}
+          path: .base-site
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -33,7 +40,7 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps --only-shell chromium
       - name: Проверка
-        run: npm run ${{ inputs.release && 'check:release' || 'check' }}
+        run: npm run ${{ inputs.release && 'check:release' || 'check' }} -- ${{ github.event_name == 'pull_request' && '--base ../../.base-site' || '' }}
       - name: Скриншоты и отчёт
         if: always()
         uses: actions/upload-artifact@v4

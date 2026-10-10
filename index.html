@@ -61,7 +61,11 @@
       <div class="container">
         <h2>Услуги</h2>
         <ul class="cards">
-          <li class="card"><h3>Услуга 1</h3><p>Описание.</p></li>
+          <li class="card">
+            <h3>Услуга 1</h3>
+            <p>Описание.</p>
+            <button class="card__more" type="button" aria-haspopup="dialog" aria-controls="sheet-service-1">Подробнее об услуге</button>
+          </li>
           <li class="card"><h3>Услуга 2</h3><p>Описание.</p></li>
           <li class="card"><h3>Услуга 3</h3><p>Описание.</p></li>
         </ul>
@@ -102,6 +106,20 @@
       </div>
     </section>
   </main>
+
+  <!-- Окно-шторка: пример. Удалите, если на сайте окон нет -->
+  <dialog class="sheet" id="sheet-service-1" aria-labelledby="sheet-service-1-title">
+    <div class="sheet__panel">
+      <div class="sheet__bar">
+        <button class="sheet__close" type="button" data-close>Закрыть <span aria-hidden="true">✕</span></button>
+      </div>
+      <div class="sheet__body">
+        <h2 class="sheet__title" id="sheet-service-1-title">Услуга 1</h2>
+        <p>Подробное описание: что входит, сколько длится, сколько стоит.</p>
+        <a class="button" href="#contacts" data-close>Оставить заявку</a>
+      </div>
+    </div>
+  </dialog>
 
   <footer class="site-footer">
     <div class="container">
